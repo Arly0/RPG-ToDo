@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { async } from 'q';
+import Task from "./components/newTask";
+import Element from "./components/element";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  state = {
+    tasks: [
+      0
+    ],
+  }
+
+  setTask = (e) => {
+    e.preventDefault();
+    let taskName = e.target.elements.nameTask.value,
+        taskRate = e.target.elements.importantTask.value,
+        task     = e.target.elements.task.value,
+        id       = 1;
+    
+        // TODO посмотреть генерация id по дате и времени
+
+    let object = {id: id, name: taskName, rate: taskRate, desc: task};
+    
+    this.setState(state => ({
+      tasks: [...state.tasks, object]
+    }))
+  }
+
+  render(){
+    return (
+      <div>
+        <div>
+          <Task setTask = {this.setTask} />
+        </div>
+        <div>
+          {this.state.tasks.map((task) => <Element key = {task.id} task = {task}  /> )}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
